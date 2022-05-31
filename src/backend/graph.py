@@ -32,6 +32,7 @@ def save_init_img(G):
     filepath = path.dirname(path.dirname(__file__))
     filepath = path.join(filepath, "frontend/static/graph_init.jpg")
     plt.savefig(filepath)
+    plt.clf()
 
 def save_fin_img(G, p, visited):
     pos = nx.spring_layout(G, seed=7, k=5/math.sqrt(G.order()))  # positions for all nodes - seed for reproducibility
@@ -60,6 +61,7 @@ def save_fin_img(G, p, visited):
     filepath = path.dirname(path.dirname(__file__))
     filepath = path.join(filepath, "frontend/static/graph_fin.jpg")
     plt.savefig(filepath)
+    plt.clf()
 
 if __name__=="__main__":
     G = nx.DiGraph()
