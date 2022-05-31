@@ -1,7 +1,6 @@
 import os
 from flask import Flask, render_template, request
 import networkx as nx
-from sympy import DisjointUnion
 from werkzeug.utils import secure_filename
 import sys
 sys.path.append('./src/backend')
@@ -25,12 +24,14 @@ def upload_file():
       f = request.files['file']
       if allowed_file(f.filename):
         filename = secure_filename(f.filename)
-        f.save(secure_filename(f.filename))
+        p = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
+        p = os.path.join(p, "test/"+filename)
+        f.save(p)
         start_node = request.form.get("snode")
         dest_node = request.form.get("dnode")
       
         g = nx.DiGraph()
-        graph.read_file(filename, g)
+        graph.read_file(p, g)
         graph.save_init_img(g)
         if not (g.has_node(start_node) and g.has_node(dest_node)):
           # either start node or dest node does not exist
@@ -39,7 +40,7 @@ def upload_file():
         else:
           dijkstra_res = dijkstra(start_node, dest_node, g)
           graph.save_fin_img(g, dijkstra_res[0])
-          # TODO : pass runtime, path, and distance
+
           path_res = "Path: "
           for i in range (len(dijkstra_res[0])-1):
             path_res += dijkstra_res[0][i]
