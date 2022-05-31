@@ -33,24 +33,29 @@ def upload_file():
         g = nx.DiGraph()
         graph.read_file(p, g)
         graph.save_init_img(g)
-        if not (g.has_node(start_node) and g.has_node(dest_node)):
+        if not (start_node in g and dest_node in g):
           # either start node or dest node does not exist
           msg = 'Node does not exist'
           return render_template('index.html', init_filename='graph_init.jpg', final_filename='graph_fin.jpg', invalid_node_msg=msg)
         else:
           dijkstra_res = dijkstra(start_node, dest_node, g)
-          graph.save_fin_img(g, dijkstra_res[0])
-
-          path_res = "Path: "
-          for i in range (len(dijkstra_res[0])-1):
-            path_res += dijkstra_res[0][i]
-            path_res += "->"
-          path_res += dijkstra_res[0][i+1]
+          graph.save_fin_img(g, dijkstra_res[0], dijkstra_res[1])
           dist_res = "Distance: "
-          dist_res += str(dijkstra_res[3])
           time_res = "Elapsed time: "
+          it_count = "Iteration: "
+          if dijkstra_res[3] is None:
+            path_res = "Nodes are not connected"
+            dist_res += "INFINITE"
+          else:
+            path_res = "Path: "
+            for i in range (len(dijkstra_res[0])-1):
+              path_res += dijkstra_res[0][i]
+              path_res += "->"
+            path_res += dijkstra_res[0][i+1]
+            dist_res += str(dijkstra_res[3])
           time_res += str(dijkstra_res[2]) + ' seconds'
-          it_count = str(dijkstra_res[4])
+          it_count += str(dijkstra_res[4])
+
           return render_template('index.html', init_filename='graph_init.jpg', final_filename='graph_fin.jpg', path=path_res, distance=dist_res, elapsed_time=time_res, iteration=it_count)
       else:
         msg = 'Must be in txt format!'
