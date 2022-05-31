@@ -32,7 +32,6 @@ def dijkstra(start, end, graph):
     it_count += 1
 
     while end not in visited and len(expand) > 0:
-        print(expand)
         c_node = expand.pop(0)
         for n in list(graph[c_node]):
             new_dist = dist[c_node] + graph[c_node][n]["weight"]
@@ -66,4 +65,4 @@ if __name__=="__main__":
     g = nx.DiGraph()
     graph.read_file('tc2.txt', g)
     graph.save_init_img(g)
-    graph.save_fin_img(g, dijkstra('1','5',g)[0])
+    graph.save_fin_img(g, dijkstra('1','5',g)[0], dijkstra('1','5',g)[1])
