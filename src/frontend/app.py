@@ -2,6 +2,8 @@ import os
 from flask import Flask, render_template, request
 import networkx as nx
 from werkzeug.utils import secure_filename
+import matplotlib
+matplotlib.use('Agg')
 import sys
 sys.path.append('./src/backend')
 import graph
@@ -18,7 +20,7 @@ def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 	
-@app.route('/uploader', methods = ['GET', 'POST'])
+@app.route('/', methods = ['GET', 'POST'])
 def upload_file():
    if request.method == 'POST':
       f = request.files['file']
