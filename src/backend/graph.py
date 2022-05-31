@@ -18,7 +18,7 @@ def read_file(filename, g):
 def save_init_img(G):
     pos = nx.spring_layout(G, seed=7, k=5/math.sqrt(G.order()))  # positions for all nodes - seed for reproducibility
     # nodes
-    nx.draw_networkx_nodes(G, pos, node_color="#1abc9c")
+    nx.draw_networkx_nodes(G, pos, node_color="#259881cc")
 
     # edges
     nx.draw_networkx_edges(G, pos, arrows=True)
@@ -33,21 +33,17 @@ def save_init_img(G):
     filepath = path.join(filepath, "frontend/static/graph_init.jpg")
     plt.savefig(filepath)
 
-def save_fin_img(G, p):
+def save_fin_img(G, p, visited):
     pos = nx.spring_layout(G, seed=7, k=5/math.sqrt(G.order()))  # positions for all nodes - seed for reproducibility
-    # nodes
-    #color_map = []
-    color_map = ["#1abc9c" for node in G]
-    '''
+    
+    color_map = []
     for node in G:
         if node in visited:
-            color_map.append("green")
+            color_map.append("#11bbc1")
         else:
-            color_map.append("blue")
-    '''
+            color_map.append("#259881cc")
     nx.draw_networkx_nodes(G, pos, node_color=color_map)
 
-    # edges
     for (u,v) in G.edges:
         G[u][v]['color'] = 'black'
     for i in range (len(p)-1):
