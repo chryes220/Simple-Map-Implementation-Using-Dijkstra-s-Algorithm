@@ -12,7 +12,7 @@
   
   /* Style the header */
   .header {
-    padding: 40px;
+    padding: 20px;
     text-align: center;
     background: #1abc9c;
     color: white;
@@ -23,15 +23,27 @@
     font-size: 40px;
   }
 
+  .output {
+    font-size: 14px;
+    font-weight: bold;
+  }
+
   .column {
-    background-color: #f1f1f1;
+    float: left;
+    width: 30%;
     padding: 20px;
+  }
+
+  .row:after {
+    content: "";
+    display: table;
+    clear: both;
   }
 
   img {
     background-color: #aaa;
-    width: 40%;
-    padding: 20px;
+    width: 100%;
+    padding: 5px;
   }
 
   input[type=file], input[type=submit] {
@@ -56,28 +68,30 @@
 <div class="row">
   <div class="column">
     <img src="{{ url_for('static', filename=init_filename) }}"><br>
+  </div>
+
+  <div class="column">
     <img src="{{ url_for('static', filename=final_filename) }}"><br>
   </div>
 
   <div class="column">
     <form method="post" action ="/" enctype="multipart/form-data">
-      <h5>{{path}}</h5>
-      <h5>{{distance}}</h5>
-      <h5>{{iteration}}</h5>
-      <h5>{{elapsed_time}}</h5>
+      <div class="output">
+        {{path}}<br>
+        {{distance}}<br>
+        {{iteration}}</br>
+        {{elapsed_time}}<br>
+      </div>
+      
       <input type="file" name ="file" class="form-control" autocomplete="off" required><br>
       <small>{{wrong_file_msg}}</small><br>
-      <p>
-        <label for="fname">Starting node</label>
-        <input type="text" id="snode" name="snode" required>
-      </p>
-      <p>
-        <label for="lname">Destination node</label>
-        <input type="text" id="dnode" name="dnode" required>
-      </p>
+      <label for="fname">Starting node</label>
+      <input type="text" id="snode" name="snode" required><br><br>
+      <label for="lname">Destination node</label>
+      <input type="text" id="dnode" name="dnode" required><br>
       <small>{{invalid_node_msg}}</small><br>
       <p>
-          <input type="submit" value="Find Shortest Path!" class ="btn btn-info">
+          <input type="submit" value="Find Shortest Path!" class ="btn btn-info", style="box-shadow: 0px 5px 5px #888888">
       </p>
   </form>
   </div>
