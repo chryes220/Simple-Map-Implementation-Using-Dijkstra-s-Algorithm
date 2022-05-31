@@ -1,12 +1,89 @@
-<html>
-  <head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Dijkstra's Shortest Path</title>
+<link rel="stylesheet" href="../custom.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  body {
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
+  }
+  
+  /* Style the header */
+  .header {
+    padding: 40px;
+    text-align: center;
+    background: #1abc9c;
+    color: white;
+  }
+  
+  /* Increase the font size of the h1 element */
+  .header h1 {
+    font-size: 40px;
+  }
 
-  </head>
-  <body>
-    <h1>Hi Lionel Messi</h1>
+  .column {
+    background-color: #f1f1f1;
+    padding: 20px;
+  }
 
-  <img src="{{url_for('static', filename='graph.jpg')}}" />
+  img {
+    background-color: #aaa;
+    width: 40%;
+    padding: 20px;
+  }
 
-  </body>
+  input[type=file], input[type=submit] {
+    background-color: #259881;
+    border: none;
+    color: white;
+    padding: 16px 32px;
+    text-decoration: none;
+    margin: 4px 2px;
+    cursor: pointer;
+  }
 
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Dijkstra's Shortest Path Algorithm</h1>
+  <p>A website to find the shortest path in a directed graph using Dijkstra's Algorithm</p>
+</div>
+
+<div class="row">
+  <div class="column">
+    <img src="{{ url_for('static', filename=init_filename) }}"><br>
+    <img src="{{ url_for('static', filename=final_filename) }}">><br>
+  </div>
+
+  <div class="column">
+    <form method="post" action ="/uploader" enctype="multipart/form-data">
+      <p>{{result_msg}}</p>
+      <d1>
+          <p>
+              <input type="file" name ="file" class="form-control" autocomplete="off" required>
+              {{msg}}
+          </p>
+      </d1>
+      <p>
+        <label for="fname">Starting node</label>
+        <input type="text" id="snode" name="snode" required>
+      </p>
+      <p>
+        <label for="lname">Destination node</label>
+        <input type="text" id="dnode" name="dnode" required>
+      </p>
+      <p>
+          <input type="submit" value="Find Shortest Path!" class ="btn btn-info">
+          {{elapsed_time}}
+      </p>
+  </form>
+  </div>
+</div>
+
+</body>
 </html>
