@@ -50,7 +50,8 @@ def upload_file():
           dist_res += str(dijkstra_res[3])
           time_res = "Elapsed time: "
           time_res += str(dijkstra_res[2]) + ' seconds'
-          return render_template('index.html', init_filename='graph_init.jpg', final_filename='graph_fin.jpg', path=path_res, distance=dist_res, elapsed_time=time_res)
+          it_count = str(dijkstra_res[4])
+          return render_template('index.html', init_filename='graph_init.jpg', final_filename='graph_fin.jpg', path=path_res, distance=dist_res, elapsed_time=time_res, iteration=it_count)
       else:
         msg = 'Must be in txt format!'
         return render_template('index.html', init_filename='graph_init.jpg', final_filename='graph_fin.jpg', wrong_file_msg=msg)
