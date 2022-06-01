@@ -19,7 +19,7 @@ def allowed_file(filename):
 
 @app.route('/')
 def home(): 
-    return render_template('index.html', init_filename='ex_init.jpg', final_filename='ex_fin.jpg')
+  return render_template('index.html', init_filename='ex_init.jpg', final_filename='ex_fin.jpg')
 
 @app.route('/', methods = ['GET', 'POST'])
 def draw_graph():
@@ -32,7 +32,7 @@ def draw_graph():
         f.save(p)
 
         g = nx.DiGraph()
-                
+
         try:
           graph.read_file(p, g)
         except Exception:
@@ -53,43 +53,46 @@ def display_img():
 
 @app.route('/search-dijkstra', methods = ['GET', 'POST'])
 def search_path():
-  # file is valid
   if request.method == 'POST':
-      filename = session.get('filename', None)
-      p = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
-      p = os.path.join(p, "test/"+filename)
+    filename = session.get('filename', None)
+    if filename is None:
+      flash('Please submit a text file by clicking on the \'Show Graph\' button')
+      return redirect(url_for('home'))
 
-      start_node = request.form.get("snode")
-      dest_node = request.form.get("dnode")
+    p = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
+    p = os.path.join(p, "test/"+filename)
 
-      g = nx.DiGraph()
-      graph.read_file(p, g)
+    start_node = request.form.get("snode")
+    dest_node = request.form.get("dnode")
 
-      if not (start_node in g and dest_node in g):
-        # either start node or dest node does not exist
-        flash('Node does not exist')
-        return redirect(url_for('display_img'))
+    g = nx.DiGraph()
+    graph.read_file(p, g)
+
+    if not (start_node in g and dest_node in g):
+      # either start node or dest node does not exist
+      flash('Node does not exist')
+      return redirect(url_for('display_img'))
+    else:
+      dijkstra_res = dijkstra(start_node, dest_node, g)
+      graph.save_fin_img(g, dijkstra_res[0], dijkstra_res[1])
+      session['dist_res'] = "Distance: "
+      session['time_res'] = "Search time: "
+      session['it_count'] = "Iteration: "
+      if dijkstra_res[3] is None:
+        session['path_res'] = "Nodes are not connected"
+        session['dist_res'] += "INFINITE"
       else:
-        dijkstra_res = dijkstra(start_node, dest_node, g)
-        graph.save_fin_img(g, dijkstra_res[0], dijkstra_res[1])
-        session['dist_res'] = "Distance: "
-        session['time_res'] = "Search time: "
-        session['it_count'] = "Iteration: "
-        if dijkstra_res[3] is None:
-          session['path_res'] = "Nodes are not connected"
-          session['dist_res'] += "INFINITE"
-        else:
-          session['path_res'] = "Path: "
-          for i in range (len(dijkstra_res[0])-1):
-            session['path_res'] += dijkstra_res[0][i]
-            session['path_res'] += "->"
-          session['path_res'] += dijkstra_res[0][i+1]
-          session['dist_res'] += str(dijkstra_res[3])
-        session['time_res'] += str(dijkstra_res[2]*10e3) + ' milliseconds'
-        session['it_count'] += str(dijkstra_res[4])
-        
-        return redirect(url_for('display_res'))
-
+        session['path_res'] = "Path: "
+        for i in range (len(dijkstra_res[0])-1):
+          session['path_res'] += dijkstra_res[0][i]
+          session['path_res'] += "->"
+        session['path_res'] += dijkstra_res[0][i+1]
+        session['dist_res'] += str(dijkstra_res[3])
+      session['time_res'] += str(dijkstra_res[2]*10e3) + ' milliseconds'
+      session['it_count'] += str(dijkstra_res[4])
+      
+      return redirect(url_for('display_res'))
+  
   return redirect(url_for('home'))
 
 @app.route('/result-dijkstra')
