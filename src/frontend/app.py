@@ -32,10 +32,16 @@ def draw_graph():
         f.save(p)
 
         g = nx.DiGraph()
-        graph.read_file(p, g)
-        graph.save_init_img(g)
-        session['filename'] = filename
-        return redirect(url_for('display_img'))
+
+        try:
+          graph.read_file(p, g)
+        except Exception:
+          flash('Invalid file content')
+          return redirect(url_for('home'))
+        else:
+          graph.save_init_img(g)
+          session['filename'] = filename
+          return redirect(url_for('display_img'))
       else:
         flash('Please submit a text file')
         return redirect(url_for('home'))
@@ -83,7 +89,7 @@ def search_path():
         session['it_count'] += str(dijkstra_res[4])
         
         return redirect(url_for('display_res'))
-        
+
   return redirect(url_for('home'))
 
 @app.route('/result-dijkstra')
