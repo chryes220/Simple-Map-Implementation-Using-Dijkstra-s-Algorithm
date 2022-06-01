@@ -50,7 +50,6 @@ def dijkstra(source, dest, graph):
         it_count += 1
         
     end = time.perf_counter()
-    print(end-begin)
 
     if (dest not in visited):
         return ([], visited, end-begin, None, it_count)
