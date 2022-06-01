@@ -1,5 +1,5 @@
 import os
-from flask import Flask, render_template, request, redirect, session, url_for
+from flask import Flask, render_template, request, redirect, session, url_for, flash
 import networkx as nx
 from werkzeug.utils import secure_filename
 import matplotlib
@@ -37,11 +37,11 @@ def draw_graph():
         session['filename'] = filename
         return redirect(url_for('display_img'))
       else:
-        msg = 'Must be in txt format!'
-        return render_template('index.html', init_filename='ex_init.jpg', final_filename='ex_fin.jpg', wrong_file_msg=msg)
+        flash('Please submit a text file')
+        return redirect(url_for('home'))
   return redirect(url_for('home'))
 
-@app.route('/display-img', methods = ['GET', 'POST'])
+@app.route('/display-img')
 def display_img():
   return render_template('index.html', init_filename='graph_init.jpg', final_filename='empty_img.jpg')
 
@@ -61,8 +61,8 @@ def search_path():
 
       if not (start_node in g and dest_node in g):
         # either start node or dest node does not exist
-        msg = 'Node does not exist'
-        return render_template('index.html', init_filename='graph_init.jpg', final_filename='empty_img.jpg', invalid_node_msg=msg)
+        flash('Node does not exist')
+        return redirect(url_for('display_img'))
       else:
         dijkstra_res = dijkstra(start_node, dest_node, g)
         graph.save_fin_img(g, dijkstra_res[0], dijkstra_res[1])
@@ -83,10 +83,10 @@ def search_path():
         session['it_count'] += str(dijkstra_res[4])
         
         return redirect(url_for('display_res'))
-
+        
   return redirect(url_for('home'))
 
-@app.route('/result-dijkstra', methods = ['GET', 'POST'])
+@app.route('/result-dijkstra')
 def display_res():
   return render_template('index.html', init_filename='graph_init.jpg', final_filename='graph_fin.jpg', path=session.get('path_res', None), distance=session.get('dist_res', None), elapsed_time=session.get('time_res', None), iteration=session.get('it_count', None))
 
