@@ -29,6 +29,6 @@ MANIFEST
 instance/
 .webassets-cache
 
-
 # Graph images
-static/
+graph_fin.jpg
+graph_init.jpg
