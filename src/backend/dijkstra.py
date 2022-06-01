@@ -32,8 +32,7 @@ def dijkstra(start, end, graph):
     it_count += 1
 
     while (end not in visited) and (len(expand) > 0):
-        print(visited)
-        print(expand)
+
         c_node = expand.pop(0)
         for n in list(graph[c_node]):
             new_dist = dist[c_node] + graph[c_node][n]["weight"]

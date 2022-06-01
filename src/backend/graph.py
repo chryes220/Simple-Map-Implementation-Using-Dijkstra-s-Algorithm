@@ -40,7 +40,7 @@ def save_fin_img(G, p, visited):
     color_map = []
     for node in G:
         if node in visited:
-            color_map.append("#11bbc1")
+            color_map.append("#dfad2ed9")
         else:
             color_map.append("#259881cc")
     nx.draw_networkx_nodes(G, pos, node_color=color_map)
