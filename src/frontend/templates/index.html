@@ -111,10 +111,16 @@
       <small>{{wrong_file_msg}}</small><br><br>
 
       <form method="post" action="{{ url_for('search_path') }}" enctype="multipart/form-data">
-        <label for="fname">Source node</label>
-        <input type="text" id="snode" name="snode" required><br><br>
-        <label for="lname">Destination node</label>
-        <input type="text" id="dnode" name="dnode" required><br>
+        <div class="container">
+          <label for="fname" style="width:40%;">Source node</label>
+          <input type="text" id="snode" name="snode" style="width:50%;" required><br><br>
+        </div>
+        
+        <div class="container">
+          <label for="lname" style="width:40%;">Destination node</label>
+          <input type="text" id="dnode" name="dnode" style="width:50%;" required><br>
+        </div>
+        
         <small>{{invalid_node_msg}}</small><br>
         <div class="container">
           <input type="submit" value="Find Shortest Path!" class ="btn btn-info", style="box-shadow: 0px 5px 5px #888888; border-radius: 4px;">
