@@ -56,11 +56,11 @@ def dijkstra(source, dest, graph):
     else:
         path = [dest]
         while source not in path:
-            path.appdest(prev[path[len(path)-1]])
+            path.append(prev[path[len(path)-1]])
         path.reverse()
         
         distance = dist[dest]
-        return (path, visited, finish-begin, distance, it_count)
+        return (path, visited, end-begin, distance, it_count)
 
 if __name__=="__main__":
     g = nx.DiGraph()
