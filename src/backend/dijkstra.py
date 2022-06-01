@@ -31,7 +31,9 @@ def dijkstra(start, end, graph):
     visited += start
     it_count += 1
 
-    while end not in visited and len(expand) > 0:
+    while (end not in visited) and (len(expand) > 0):
+        print(visited)
+        print(expand)
         c_node = expand.pop(0)
         for n in list(graph[c_node]):
             new_dist = dist[c_node] + graph[c_node][n]["weight"]
@@ -40,14 +42,15 @@ def dijkstra(start, end, graph):
                 dist.update(up)
                 prev[n] = c_node
                 expand = sorted(dist, key=dist.get)
+        visited += c_node
         i = 0
         while i < len(expand):
             if (expand[i] in visited or dist[expand[i]]==999999):
                 expand.pop(i)
             else :
                 i += 1
-        visited += c_node
         it_count += 1
+        
     finish = time.time()
 
     if (end not in visited):
