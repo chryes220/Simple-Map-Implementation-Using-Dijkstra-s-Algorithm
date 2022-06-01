@@ -43,7 +43,7 @@ def upload_file():
           dijkstra_res = dijkstra(start_node, dest_node, g)
           graph.save_fin_img(g, dijkstra_res[0], dijkstra_res[1])
           dist_res = "Distance: "
-          time_res = "Elapsed time: "
+          time_res = "Search time: "
           it_count = "Iteration: "
           if dijkstra_res[3] is None:
             path_res = "Nodes are not connected"

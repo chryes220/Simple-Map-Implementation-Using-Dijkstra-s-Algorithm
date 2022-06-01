@@ -3,7 +3,7 @@ import networkx as nx
 import graph
 import time
 
-def dijkstra(start, end, graph):
+def dijkstra(source, dest, graph):
     begin = time.time()
     nodes = list(graph.nodes)
     visited = []
@@ -15,24 +15,23 @@ def dijkstra(start, end, graph):
     for n in nodes:
         dist[n] = 999999
         prev[n] = None
-    dist[start] = 0
+    dist[source] = 0
 
-    for n in list(graph[start]):
-        dist[n] = graph[start][n]["weight"]
-        prev[n] = start
+    for n in list(graph[source]):
+        dist[n] = graph[source][n]["weight"]
+        prev[n] = source
     expand = sorted(dist, key=dist.get)
     
     i = 0
     while i < len(expand):
-        if (expand[i] in visited or expand[i] not in list(graph[start])):
+        if (expand[i] in visited or expand[i] not in list(graph[source])):
             expand.pop(i)
         else :
             i += 1
-    visited += start
+    visited += source
     it_count += 1
 
-    while (end not in visited) and (len(expand) > 0):
-
+    while (dest not in visited) and (len(expand) > 0):
         c_node = expand.pop(0)
         for n in list(graph[c_node]):
             new_dist = dist[c_node] + graph[c_node][n]["weight"]
@@ -50,17 +49,17 @@ def dijkstra(start, end, graph):
                 i += 1
         it_count += 1
         
-    finish = time.time()
+    end = time.time()
 
-    if (end not in visited):
-        return ([], visited, finish-begin, None, it_count)
+    if (dest not in visited):
+        return ([], visited, end-begin, None, it_count)
     else:
-        path = [end]
-        while start not in path:
-            path.append(prev[path[len(path)-1]])
+        path = [dest]
+        while source not in path:
+            path.appdest(prev[path[len(path)-1]])
         path.reverse()
         
-        distance = dist[end]
+        distance = dist[dest]
         return (path, visited, finish-begin, distance, it_count)
 
 if __name__=="__main__":
