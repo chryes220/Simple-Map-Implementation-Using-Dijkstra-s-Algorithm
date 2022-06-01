@@ -32,7 +32,7 @@ def draw_graph():
         f.save(p)
 
         g = nx.DiGraph()
-
+                
         try:
           graph.read_file(p, g)
         except Exception:
