@@ -55,7 +55,7 @@ def upload_file():
               path_res += "->"
             path_res += dijkstra_res[0][i+1]
             dist_res += str(dijkstra_res[3])
-          time_res += str(dijkstra_res[2]) + ' seconds'
+          time_res += str(dijkstra_res[2]*10e3) + ' milliseconds'
           it_count += str(dijkstra_res[4])
 
           return render_template('index.html', init_filename='graph_init.jpg', final_filename='graph_fin.jpg', path=path_res, distance=dist_res, elapsed_time=time_res, iteration=it_count)

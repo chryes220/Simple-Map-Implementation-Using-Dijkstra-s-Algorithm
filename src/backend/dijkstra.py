@@ -4,7 +4,7 @@ import graph
 import time
 
 def dijkstra(source, dest, graph):
-    begin = time.time()
+    begin = time.perf_counter()
     nodes = list(graph.nodes)
     visited = []
     expand = []
@@ -49,7 +49,8 @@ def dijkstra(source, dest, graph):
                 i += 1
         it_count += 1
         
-    end = time.time()
+    end = time.perf_counter()
+    print(end-begin)
 
     if (dest not in visited):
         return ([], visited, end-begin, None, it_count)
