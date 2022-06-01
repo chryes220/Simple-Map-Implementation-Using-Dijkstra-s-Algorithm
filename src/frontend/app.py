@@ -92,4 +92,4 @@ def display_res():
 
 if __name__ == '__main__':
     g = nx.DiGraph()
-    app.run()
+    app.run(debug=True)

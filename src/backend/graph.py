@@ -2,8 +2,10 @@ import math
 import networkx as nx
 import matplotlib.pyplot as plt
 from os import path
+from netgraph import Graph
 
 def read_file(filename, g):
+    # read txt file, translate content into nx.DiGraph
     p = filename
     lines = []
     with open(p, 'r') as f:
@@ -16,18 +18,16 @@ def read_file(filename, g):
         g.add_edge(edge[0],edge[1],weight=float(edge[2]))
 
 def save_init_img(G):
-    pos = nx.spring_layout(G, seed=7, k=5/math.sqrt(G.order()))  # positions for all nodes - seed for reproducibility
-    # nodes
-    nx.draw_networkx_nodes(G, pos, node_color="#259881cc")
+    pos = nx.shell_layout(G)
 
-    # edges
-    nx.draw_networkx_edges(G, pos, arrows=True)
-
-    # node labels
-    nx.draw_networkx_labels(G, pos, font_family="sans-serif")
-    # edge weight labels
-    edge_labels = nx.get_edge_attributes(G, "weight")
-    nx.draw_networkx_edge_labels(G, pos, edge_labels)
+    #pos = nx.spring_layout(G, seed=7, k=5/math.sqrt(G.order()))
+    edge_labels = nx.get_edge_attributes(G, 'weight')
+    Graph(G, node_layout=pos, edge_layout='curved', origin=(-1, -1), scale=(2, 2),
+        node_color="#259881cc", node_size=15.,
+        node_labels=True, node_label_fontdict=dict(size=13),
+        edge_labels=edge_labels, edge_label_fontdict=dict(size=9),
+        arrows=True, edge_width=2., edge_color="black"
+    )
     
     filepath = path.dirname(path.dirname(__file__))
     filepath = path.join(filepath, "frontend/static/graph_init.jpg")
@@ -35,29 +35,35 @@ def save_init_img(G):
     plt.clf()
 
 def save_fin_img(G, p, visited):
-    pos = nx.spring_layout(G, seed=7, k=5/math.sqrt(G.order()))  # positions for all nodes - seed for reproducibility
-    
-    color_map = []
+    pos = nx.shell_layout(G)
+
+    # nodes
+    color_map = {}
     for node in G:
         if node in visited:
-            color_map.append("#dfad2ed9")
+            color_map[node] = "#dfad2ed9"
         else:
-            color_map.append("#259881cc")
-    nx.draw_networkx_nodes(G, pos, node_color=color_map)
+            color_map[node] = "#259881cc"
 
+    edge_labels = nx.get_edge_attributes(G, 'weight')
+
+    # edges
     for (u,v) in G.edges:
         G[u][v]['color'] = 'black'
     for i in range (len(p)-1):
         G[p[i]][p[i+1]]['color'] = 'red'
-    edge_color_map = [G[u][v]['color'] for (u,v) in G.edges]
-    nx.draw_networkx_edges(G, pos, edge_color = edge_color_map, arrows=True)
+    edge_color_map = {}
+    for (u,v) in G.edges:
+        edge_color_map[(u,v)] = G[u][v]['color']
+    #edge_color_map = [G[u][v]['color'] for (u,v) in G.edges]
 
-    # node labels
-    nx.draw_networkx_labels(G, pos, font_family="sans-serif")
-    # edge weight labels
-    edge_labels = nx.get_edge_attributes(G, "weight")
-    nx.draw_networkx_edge_labels(G, pos, edge_labels)
-    
+    Graph(G, node_layout=pos, edge_layout='curved', origin=(-1, -1), scale=(2, 2),
+        node_color=color_map, node_size=15.,
+        node_labels=True, node_label_fontdict=dict(size=13),
+        edge_labels=edge_labels, edge_label_fontdict=dict(size=9),
+        arrows=True, edge_width=2., edge_color=edge_color_map
+    )
+
     filepath = path.dirname(path.dirname(__file__))
     filepath = path.join(filepath, "frontend/static/graph_fin.jpg")
     plt.savefig(filepath)
