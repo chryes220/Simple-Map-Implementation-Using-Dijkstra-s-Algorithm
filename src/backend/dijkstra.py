@@ -20,14 +20,10 @@ def dijkstra(source, dest, graph):
     for n in list(graph[source]):
         dist[n] = graph[source][n]["weight"]
         prev[n] = source
+
     expand = sorted(dist, key=dist.get)
+    expand = [node for node in expand if (node not in visited and node in list(graph[source]))]
     
-    i = 0
-    while i < len(expand):
-        if (expand[i] in visited or expand[i] not in list(graph[source])):
-            expand.pop(i)
-        else :
-            i += 1
     visited += source
     it_count += 1
 
@@ -39,14 +35,10 @@ def dijkstra(source, dest, graph):
                 up = {n:new_dist}
                 dist.update(up)
                 prev[n] = c_node
-                expand = sorted(dist, key=dist.get)
+        
         visited += c_node
-        i = 0
-        while i < len(expand):
-            if (expand[i] in visited or dist[expand[i]]==999999):
-                expand.pop(i)
-            else :
-                i += 1
+        expand = sorted(dist, key=dist.get)
+        expand = [node for node in expand if (node not in visited and dist[node] != 999999)]     
         it_count += 1
         
     end = time.perf_counter()
