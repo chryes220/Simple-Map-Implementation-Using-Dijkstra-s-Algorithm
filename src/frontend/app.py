@@ -92,7 +92,7 @@ def search_path():
       session['it_count'] += str(dijkstra_res[4])
       
       return redirect(url_for('display_res'))
-  
+      
   return redirect(url_for('home'))
 
 @app.route('/result-dijkstra')
