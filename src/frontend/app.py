@@ -83,10 +83,13 @@ def search_path():
         session['dist_res'] += "INFINITE"
       else:
         session['path_res'] = "Path: "
-        for i in range (len(dijkstra_res[0])-1):
-          session['path_res'] += dijkstra_res[0][i]
-          session['path_res'] += "->"
-        session['path_res'] += dijkstra_res[0][i+1]
+        if (len(dijkstra_res[0]) == 1):
+          session['path_res'] += dijkstra_res[0][0]
+        else: 
+          for i in range (len(dijkstra_res[0])-1):
+            session['path_res'] += dijkstra_res[0][i]
+            session['path_res'] += "->"
+          session['path_res'] += dijkstra_res[0][i+1]
         session['dist_res'] += str(dijkstra_res[3])
       session['time_res'] += str(dijkstra_res[2]*10e3) + ' milliseconds'
       session['it_count'] += str(dijkstra_res[4])
